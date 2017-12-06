@@ -7,11 +7,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.legacy.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import br.uscsal.testequalidade20162.radio.exceptions.RegistroDuplicadoException;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ Musica.class, Album.class })
 public class AlbumUnitarioTest {
 
