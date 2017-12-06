@@ -54,8 +54,17 @@ public class RadioBOUnitarioTest {
 		String nomeInterprete = "Interprete 1";
 		Musica musica = new Musica(nomeMusica, duracao, nomeInterprete);
 		
+		PowerMockito.mockStatic(albumDaoMock.getClass());
+		PowerMockito.mockStatic(musicaDaoMock.getClass());
+		
 		PowerMockito.doNothing().when(albumDaoMock).incluir(album);
 		PowerMockito.doNothing().when(musicaDaoMock).incluir(musica);
+		
+		PowerMockito.doNothing().when(albumDaoMock).buscarPorTitulo(nomeAlbum);
+		PowerMockito.doNothing().when(musicaDaoMock).buscarPorNome(nomeMusica);
+		
+		radio.incluirAlbum(nomeAlbum, dataLancamento, TipoMidia.CD);
+		radio.incluirMusica(nomeMusica, duracao, nomeInterprete);
 		
 		radio.adicionarMusica(nomeAlbum, nomeMusica);
 
