@@ -5,10 +5,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.legacy.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
-
-
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ RadioTui.class })
@@ -20,16 +18,16 @@ public class RadioTuiUnitarioTest {
 
 	@Mock
 	RadioTui radio;
-	
+
 	@Test
 	public void verificarObterTexto() throws Exception {
 
 		PowerMockito.mockStatic(System.class);
-		
+
 		radio = Whitebox.invokeMethod(radio);
-		
+
 		radio.adicionarMusica();
-		
+
 		PowerMockito.verifyPrivate(radio);
 
 	}

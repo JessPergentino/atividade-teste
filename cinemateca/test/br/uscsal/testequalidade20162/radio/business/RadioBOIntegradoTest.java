@@ -1,12 +1,8 @@
 package br.uscsal.testequalidade20162.radio.business;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +10,6 @@ import br.uscsal.testequalidade20162.radio.enums.TipoMidia;
 import br.uscsal.testequalidade20162.radio.exceptions.RegistroDuplicadoException;
 import br.uscsal.testequalidade20162.radio.exceptions.RegistroNaoEncontradoException;
 import br.uscsal.testequalidade20162.radio.util.DateUtil;
-import junit.framework.Assert;
 
 public class RadioBOIntegradoTest {
 
@@ -50,10 +45,9 @@ public class RadioBOIntegradoTest {
 		// Dados de Entrada
 		String nomeMusica = "Musica 1";
 		String nomeAlbum = "Album 1";
-		
+
 		// Executar o metodo a ser testado
 		radio.adicionarMusica(nomeAlbum, nomeMusica);
-		
-	
+
 	}
 }

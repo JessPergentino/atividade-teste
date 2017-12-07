@@ -1,15 +1,13 @@
 package br.uscsal.testequalidade20162.radio.business;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.legacy.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import br.uscsal.testequalidade20162.radio.domain.Album;
 import br.uscsal.testequalidade20162.radio.domain.Musica;
@@ -21,7 +19,7 @@ import br.uscsal.testequalidade20162.radio.persistence.MusicaDao;
 import br.uscsal.testequalidade20162.radio.util.DateUtil;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ AlbumDao.class, MusicaDao.class, Musica.class, Album.class })
+@PrepareForTest({ AlbumDao.class, MusicaDao.class })
 public class RadioBOUnitarioTest {
 
 	// MÃ©todo a ser testado: public static void adicionarMusica(String tituloAlbum,
@@ -32,51 +30,30 @@ public class RadioBOUnitarioTest {
 	// LEMBRE-SE DE QUE ESTE TESTE DEVE SER UNITÃ�RIO!!!
 
 	private RadioBO radio;
-	
-	@Mock
-	AlbumDao albumDaoMock;
-	MusicaDao musicaDaoMock;
 
 	@Before
-	public void setUp() throws ParseException, RegistroNaoEncontradoException, RegistroDuplicadoException {
-		radio = new RadioBO();
-		
-		// Criação do Album
-		String nomeAlbum = "Album 1";
-		String dataString = "06/05/2001";
+	public void setUp() throws Exception {
+
+		String dataString = "06/07/2008";
 		DateUtil date = new DateUtil();
 		Date dataLancamento = date.parse(dataString);
-		Album album = new Album(nomeAlbum, dataLancamento, TipoMidia.CD);
 
-		// Criação da Musica
-		String nomeMusica = "Musica 1";
-		Integer duracao = 4;
-		String nomeInterprete = "Interprete 1";
-		Musica musica = new Musica(nomeMusica, duracao, nomeInterprete);
-		
-		PowerMockito.mockStatic(albumDaoMock.getClass());
-		PowerMockito.mockStatic(musicaDaoMock.getClass());
-		
-		PowerMockito.doNothing().when(albumDaoMock).incluir(album);
-		PowerMockito.doNothing().when(musicaDaoMock).incluir(musica);
-		
-		PowerMockito.doNothing().when(albumDaoMock).buscarPorTitulo(nomeAlbum);
-		PowerMockito.doNothing().when(musicaDaoMock).buscarPorNome(nomeMusica);
-		
-		radio.incluirAlbum(nomeAlbum, dataLancamento, TipoMidia.CD);
-		radio.incluirMusica(nomeMusica, duracao, nomeInterprete);
-		
-		radio.adicionarMusica(nomeAlbum, nomeMusica);
+		Musica musica = new Musica("Musica 1", 4, "Interprete");
+		Album album = new Album("Album 1", dataLancamento, TipoMidia.CD);
 
+		PowerMockito.mockStatic(AlbumDao.class);
+		PowerMockito.mockStatic(MusicaDao.class);
+
+		PowerMockito.when(AlbumDao.class, "buscarPorTitulo", "Album 1").thenReturn(album);
+		PowerMockito.when(MusicaDao.class, "buscarPorNome", "Musica 1").thenReturn(musica);
+
+		radio.adicionarMusica("Album 1", "Musica 1");
 	}
 
-	@Test(expected = RegistroNaoEncontradoException.class)
+	@Test(expected = RegistroDuplicadoException.class)
 	public void adicionarMusicaDuplicada() throws RegistroNaoEncontradoException, RegistroDuplicadoException {
-		
-		String nomeAlbum = "Album 1";
-		String nomeMusica = "Musica 1";
-		
-		radio.adicionarMusica(nomeAlbum, nomeMusica);
-		
+
+		radio.adicionarMusica("Album 1", "Musica 1");
+
 	}
 }
