@@ -34,7 +34,7 @@ public class AlbumUnitarioTest {
 
 		Musica musica = new Musica("Musica 1", 4, "Interprete");
 
-		album.adicionarMusica(musica);
+		album.getMusicas().add(musica);
 	}
 
 	@Test(expected = RegistroDuplicadoException.class)
