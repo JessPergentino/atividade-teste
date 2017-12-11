@@ -1,8 +1,12 @@
 package br.uscsal.testequalidade20162.radio.tui;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -16,19 +20,24 @@ public class RadioTuiUnitarioTest {
 	// Verificar o processo de entrada e saída para obtenção de um texto.
 	// Obs: fazer o mock do System.in e do System.out.
 
-	@Mock
-	RadioTui radio;
-
 	@Test
 	public void verificarObterTexto() throws Exception {
 
-		PowerMockito.mockStatic(System.class);
+		Scanner scannerMock = PowerMockito.mock(Scanner.class);
+		Whitebox.setInternalState(RadioTui.class, "sc", scannerMock);
 
-		radio = Whitebox.invokeMethod(radio);
+		PrintStream printMock = PowerMockito.mock(PrintStream.class);
+		System.setOut(printMock);
+		
+		String mensagemEsperada = "Texto Recebido";
 
-		radio.adicionarMusica();
+		PowerMockito.when(scannerMock.nextLine()).thenReturn("Texto Recebido");
 
-		PowerMockito.verifyPrivate(radio);
+		String respostaAtual = Whitebox.invokeMethod(RadioTui.class, "obterTexto", "Texto Exibido");
+
+		Mockito.verify(printMock).println("Texto Exibido");
+
+		Assert.assertEquals(mensagemEsperada, respostaAtual);
 
 	}
 }
